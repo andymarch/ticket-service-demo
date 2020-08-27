@@ -25,7 +25,7 @@ router.post("/", async function (req,res){
         ticket.comments = [req.body.comment]
 
         var tickets = cache.get(req.userContext)
-        if(ticket == null){
+        if(tickets == null){
             tickets = []
         }
         tickets.push(ticket)
