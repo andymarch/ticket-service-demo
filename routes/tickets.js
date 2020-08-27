@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 var cache = require('memory-cache');
 const uudiv1 = require('uuid/v1');
+const TicketModel = require('../models/ticketModel')
 
 module.exports = function (){
 
