@@ -49,8 +49,8 @@ router.post("/:id", async function(req,res) {
             var updated
             for (let index = 0; index < tickets.length; index++) {
                 if(tickets[index].id == req.params.id){
-                    tickets[index.id].status = "comments"
-                    tickets[index.id].comments.push(req.body.comment)
+                    tickets[index].status = "comments"
+                    tickets[index].comments.push(req.body.comment)
                     cache.put(req.userContext, tickets,900000,function(key,value){
                         console.log("Session "+key+ " expired for "+value)
                     })
