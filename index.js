@@ -19,7 +19,7 @@ function verifyUserAccess(req,res,next){
     .then(jwt => {
         req.sub = jwt.claims.sub
         req.customer_number = jwt.claims.customer_number
-        if(jwt.claims.onBehalf){
+        if(jwt.claims.onBehalf == "True"){
           req.on_behalf = true
           req.on_behalf_sub = jwt.claims.on_behalf_sub
         }

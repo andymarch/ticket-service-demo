@@ -22,7 +22,7 @@ router.post("/", async function (req,res){
         var ticket = new TicketModel()
         ticket.id = uudiv1()
         ticket.status = "new"
-        ticket.comments = [req.body.comment]
+        ticket.comments = [getCommentString(req)]
 
         var tickets = cache.get(req.customer_number)
         if(tickets == null){
@@ -49,16 +49,8 @@ router.post("/:id", async function(req,res) {
             var updated
             for (let index = 0; index < tickets.length; index++) {
                 if(tickets[index].id == req.params.id){
-                    var comment
-                    if(req.on_behalf) {
-                        comment = req.sub + "(on behalf of " + req.on_behalf_sub + "): " + req.body.comment
-                    }
-                    else {
-                        comment = req.sub + ": "+req.body.comment
-                    }
-
                     tickets[index].status = "comments"
-                    tickets[index].comments.push(comment)
+                    tickets[index].comments.push(getCommentString(req))
                     cache.put(req.customer_number, tickets,900000,function(key,value){
                         console.log("Session "+key+ " expired for "+value)
                     })
@@ -81,6 +73,17 @@ router.post("/:id", async function(req,res) {
         res.status(500).send("An error occurred")
     }
 })
+
+function getCommentString(req){
+    var comment
+    if(req.on_behalf) {
+        comment = req.sub + "(on behalf of " + req.on_behalf_sub + "): " + req.body.comment
+    }
+    else {
+        comment = req.sub + ": "+req.body.comment
+    }
+    return comment
+}
 
 return router
 }
