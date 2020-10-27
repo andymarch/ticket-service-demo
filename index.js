@@ -17,7 +17,12 @@ function verifyUserAccess(req,res,next){
   if(authz != null && authz.startsWith("Bearer")){
     oktaJwtVerifier.verifyAccessToken(authz.replace("Bearer ",""),process.env.TOKEN_AUD)
     .then(jwt => {
-        req.userContext = jwt.claims.customer_number
+        req.sub = jwt.claims.sub
+        req.customer_number = jwt.claims.customer_number
+        if(jwt.claims.onBehalf){
+          req.on_behalf = true
+          req.on_behalf_sub = jwt.claims.on_behalf_sub
+        }
         return next();
     })
     .catch(err => {
