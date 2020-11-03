@@ -18,7 +18,7 @@ function verifyUserAccess(req,res,next){
     oktaJwtVerifier.verifyAccessToken(authz.replace("Bearer ",""),process.env.TOKEN_AUD)
     .then(jwt => {
         req.sub = jwt.claims.sub
-        req.customer_number = jwt.claims.customer_number
+        req.customer_number = jwt.claims.customer_reference_number
         if(jwt.claims.on_behalf == "True"){
           req.on_behalf = true
           req.on_behalf_sub = jwt.claims.on_behalf_sub
